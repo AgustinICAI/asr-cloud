@@ -1,4 +1,4 @@
-## ASR Cloud 🚀
+# ASR Cloud 🚀
 
 Este repositorio contiene las prácticas (quick-labs) que se siguen en el 
 módulo de Cloud Computing del curso de *Arquitectura de Sistemas en Red - Cloud Computing*,
