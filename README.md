@@ -38,7 +38,7 @@ permitir trabajar con los servicios y recursos Cloud de Google de manera program
 La referencia de los comandos que podemos usar para estas tareas se puede encontrar
 en la [web](https://cloud.google.com/sdk/gcloud/reference).
 
-### Software Development Kits: Azure y Google 
+## Software Development Kits: Azure y Google 
 
 A medida que avancemos en el curso, será costumbre en nuestras prácticas el trabajar con nuestro
 terminal, tanto en Windows como en sistemas Linux. 
@@ -84,8 +84,16 @@ terminales según OS:
 
     1. [iTerm2](https://iterm2.com/) + [OhMyZsh](https://ohmyz.sh/)
 
-- Linxu:
+- Linux:
     1. La terminal nativa + [OhMyZsh](https://ohmyz.sh/)
+
+
+
+## Siguientes pasos
+
+Cuando vayamos avanzando nuestra asignatura veremos tampoco es buena práctica tocar directamente a través de la consola, sino que la buena práctica es que todo se encuentre repositado y trabajemos como Infraestructura como Código (IaC - Infraestructure as Code). Para ello trabajaremos con las tecnologías:
+- Ansible
+- Terraform
 
 ## Colaboración
 
