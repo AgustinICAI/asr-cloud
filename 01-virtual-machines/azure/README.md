@@ -58,7 +58,10 @@ Para ello:
    $ az vm open-port --port 80 --resource-group example-resource-group --name my-first-vm
    ```
    
-5. Ahora nos podemos conectar a la máquina via RDP (remote desktop protocol). 
+   Este comando tan "majo", en realidad hace muchas cosas por debajo. Se crea un "Network security group", agrega una regla y la aplica a la VM.
+   https://docs.microsoft.com/en-us/azure/virtual-machines/linux/nsg-quickstart
+   
+5. Ahora nos podemos conectar a la máquina via RDP (remote desktop protocol). (Aquí ver como hacerlo en Linux)
    Una vez dentro de la máquina, procedemos a la instalación el `IIS web server`. 
    PAra ello, abrimos powershell y ejecutamos:
    
