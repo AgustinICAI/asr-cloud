@@ -182,7 +182,7 @@ roles/simple-web/tasks/main.yml: este es otro playbook para instalar httpd en VM
 ```
 
 
-Línea 4: "yum" es un módulo Ansible para sistemas basados en RHEL/CentOS, consulte la documentación de Ansible para otros sistemas operativos. Se ha usado "yum" porque el sistema elegido ha sido RHEL. En esta línea, estamos instalando el paquete “httpd”. si "state = present" para instalar el paquete
+Línea 4: "yum" es un módulo Ansible para sistemas basados en RHEL/CentOS, consulta la documentación de Ansible para otros sistemas operativos. Se ha usado "yum" porque el sistema operativo elegido ha sido RHEL. En esta línea, estamos instalando el paquete “httpd”. si "state = present" para instalar el paquete
 
 Línea 8: Copiando los archivos de nuestro sitio web a VM
 
