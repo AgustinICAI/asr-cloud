@@ -10,5 +10,4 @@ openssl x509 -req -in myserver.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateser
  
  
 ## Hacer lo mismo en un mismo paso y de forma interactiva con OpenSSL
-openssl req -x509 -newkey rsa:4096 -keyout KEY.key -out cert.pem -sha256 -days 365
-
+openssl req -x509 -newkey rsa:2048 -keyout KEY.key -out cert.pem -days 365 -nodes
