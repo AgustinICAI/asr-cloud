@@ -1,11 +1,15 @@
+provider "google" {
+  project = "savvy-bay-362807"
+  region  = "europe-west1"
+  zone    = "europe-west1-d"
+}
+
 resource "google_compute_instance" "terraform" {
-  project      = "innate-infusion-327910"
   name         = "terraform"
   machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "projects/centos-cloud/global/images/centos-7-v20220822"
     }
   }
   network_interface {
@@ -14,3 +18,4 @@ resource "google_compute_instance" "terraform" {
     }
   }
 }
+

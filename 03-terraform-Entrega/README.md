@@ -14,7 +14,7 @@ sobre su descarga e instalación en la página oficial:
 
 #### Fichero de configuración
 
-Al igual que en el caso de Deployment Manager, necesitamos
+Al igual que en el caso de Ansible, necesitamos
 un fichero de configuración que será en el que listemos los
 recursos de infraestructura a desplegar. En este caso, vamos
 a generar una configuración que finalmente generará una 
@@ -27,17 +27,25 @@ Esto se debe a que Terraform tiene su propia sintaxis que su
 línea de comando es capaz de traducir a órdenes específicas
 de cada una de las nubes con las que podemos trabajar. Podemos
 ver rápidamente que el fichero es bastante más liviano 
-que en el caso de Deplyment Manager:
+que en el caso de Ansible.
+
+Es importante destacar el primer bloque `provider`. Este indica la
+configuración común que tendrán todos los recursos desplegados con Terraform.
+
 
 ```terraform
+provider "google" {
+  project = "savvy-bay-362807"
+  region  = "europe-west1"
+  zone    = "europe-west1-d"
+}
+
 resource "google_compute_instance" "terraform" {
-  project      = "innate-infusion-327910"
   name         = "terraform"
   machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "projects/centos-cloud/global/images/centos-7-v20220822"
     }
   }
   network_interface {
@@ -51,13 +59,13 @@ resource "google_compute_instance" "terraform" {
 Se puede ver perfectamente como se está listando un recurso
 de tipo `google_compute_instance`, cuyas características se
 precisan dentro de la región de definición `{ ... }`.
-Como vemos, la VM tendrá `Debian9` y será conectada a la
+Como vemos, la VM tendrá `centos` versión `7` y será conectada a la
 red por defecto de nuestro proyecto. 
 
 Para entender la sintaxis particular de Terraform, nos
 referimos a la documentación oficial [aquí](https://www.terraform.io/docs/language/index.html).
 
-Una vez tenemos el fichero de configuración guardado como [instance.tf](instance.tf),
+Una vez tenemos el fichero de configuración guardado como [main.tf](main.tf),
 procedemos a la inicialización, planificación y aplicación del mismo:
 
 #### Inicialización
@@ -70,8 +78,8 @@ Initializing the backend...
 
 Initializing provider plugins...
 - Finding latest version of hashicorp/google...
-- Installing hashicorp/google v4.0.0...
-- Installed hashicorp/google v4.0.0 (signed by HashiCorp)
+- Installing hashicorp/google v4.36.0...
+- Installed hashicorp/google v4.36.0 (signed by HashiCorp)
 
 Terraform has created a lock file .terraform.lock.hcl to record the provider
 selections it made above. Include this file in your version control repository
@@ -87,6 +95,7 @@ should now work.
 If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
+
 ```
 
 Para comprobar que se ha descargado el plugin como debe
@@ -95,16 +104,16 @@ ser, podemos listar el contenido de la carpeta:
 ```shell
 ll -a
 
-drwxr-xr-x   6 staff   192B  6 Nov 17:37 .
-drwxr-xr-x@ 21 staff   672B  6 Nov 17:23 ..
-drwxr-xr-x   3 staff    96B  6 Nov 17:35 .terraform
--rw-r--r--   1 staff   1.1K  6 Nov 17:35 .terraform.lock.hcl
--rw-r--r--   1 staff   3.3K  6 Nov 17:37 README.md
--rw-r--r--   1 staff   349B  6 Nov 17:25 instance.tf
+drwxr-xr-x   6 staff   192B  .
+drwxr-xr-x@ 21 staff   672B  ..
+drwxr-xr-x   3 staff    96B  .terraform
+-rw-r--r--   1 staff   1.1K  .terraform.lock.hcl
+-rw-r--r--   1 staff   3.3K  README.md
+-rw-r--r--   1 staff   349B   main.tf
 ```
 
 De hecho, el plugin mencionado estará en la subcarpeta:
-`.terraform/providers/registry.terraform.io/hashicorp/google/4.0.0/darwin_amd64/`
+`.terraform/providers/registry.terraform.io/hashicorp/google/4.36.0/darwin_amd64/`
 y tendrá el nombre: `terraform-provider-google_v4.0.0_x5`
 
 #### Planificación
@@ -212,6 +221,10 @@ muchos campos en los cuales tenemos: `(known after apply)`.
 Esto se debe a que susodichos campos no se han especificado en la
 configuración, y por tanto serán poblados con los valores por 
 defecto, y por ende solo serán conocidos tras su creación.
+
+Si falla, es porque probablemente todavía no habrás seteado las variable de entorno
+`GOOGLE_APPLICATION_CREDENTIAL`. Esta variable es la que utiliza terraform para conocer
+donde se encuentra la service account con permisos para poder acceder.
 
 
 #### Aplicación
@@ -328,6 +341,15 @@ google_compute_instance.terraform: Creation complete after 37s [id=projects/inna
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
+
+## Entrega
+Realizar las modificaciones necesarias en la plantilla de Terraform, para que igual que hemos
+hecho con Ansible, la máquina sea accesible por ssh y http. No podremos llegar tan lejos como con Ansible,
+donde también instalabamos el servidor web, pero si deberíamos con la plantilla Terraform,
+dejar la instancia lo más preparada posible, para poder instalar sobre la máquina el servidor web (este paso
+manual no hace falta realizarlo).
+
+
 #### Liberación de los recursos
 
 Para liberar recursos, solo tenemos que ejecutar:
@@ -342,4 +364,7 @@ Al igual que antes, Terraform nos preguntará antes de proceder,
 ya que se trata de un cambio de infraestructura relevante.
 Solo tenemos que escribir `yes` y la infraestructura será
 destruida.
+  
+  
+  
   
