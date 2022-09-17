@@ -35,8 +35,8 @@ Create new key -> Download JSON file
 ```bash 
 # login with normal user
 gcloud init 
-
-gcloud compute project-info add-metadata –metadata enable-oslogin=TRUE 
+# Se añade un metadato que indica que todas las máquinas del proyecto son accesibles por OS-LOGIN
+gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE 
 
 # Login with service account user using the json file
 gcloud auth activate-service-account --key-file=<.json file downloaded earlier>
