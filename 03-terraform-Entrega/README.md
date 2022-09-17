@@ -341,6 +341,33 @@ google_compute_instance.terraform: Creation complete after 37s [id=projects/inna
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
+Si miramos el contenido de la carpeta, podremos ver se han generado unos nuevos ficheros. Aquí el fichero
+importante nuevo es `tfstate`. Este fichero contiene el estado (o la foto) de la infraestructura desplegada.
+
+Terraform cuando tiene que hacer modificaciones, o nuevos apply, no destruye ni plancha de nuevo instancias,
+
+```shell
+ll -a
+
+drwxr-xr-x   6 staff   192B  .
+drwxr-xr-x@ 21 staff   672B  ..
+drwxr-xr-x   3 staff    96B  .terraform
+-rw-r--r--   1 staff   1.1K  .terraform.lock.hcl
+-rw-r--r--   1 staff   3.3K  README.md
+-rw-r--r--   1 staff   349B   main.tf
+
+drwxrwxr-x  3 staff 4,0K .
+drwxrwxr-x 10 staff 4,0K ..
+-rw-rw-r--  1 staff  419 main.tf
+-rw-rw-r--  1 staff  13K README.md
+drwxr-xr-x  3 staff 4,0K .terraform
+-rw-r--r--  1 staff 1,2K .terraform.lock.hcl
+-rw-rw-r--  1 staff 4,4K terraform.tfstate
+-rw-rw-r--  1 staff  155 terraform.tfstate.backup
+
+```
+
+
 
 ## Entrega
 Realizar las modificaciones necesarias en la plantilla de Terraform, para que igual que hemos
