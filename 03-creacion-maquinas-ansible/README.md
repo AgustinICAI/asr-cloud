@@ -208,9 +208,8 @@ Para el UID de la SA -> Consola de GCP -> IAM -> Service Accounts -> Haga clic e
 También se puede abrir el fichero de texto y vendrá ahí.
 
 
+## ENTREGA: subir a git la plantilla/s modificada. 
 ¿Por qué está fallando? ¿Qué cambios habría que hacer? Modifica la plantilla de Ansible para añadir los componentes que falta.
-1er Fallo: problema con ssh
-
 
 ## Resultado
 Al abrir la IP pública de la VM desde la consola de GCP, vemos que nuestro sitio web está implementado en la VM.
