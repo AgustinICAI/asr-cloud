@@ -7,8 +7,6 @@ En esta práctica vamos a realizar el aprovisionamiento de la instancia de Googl
 ![Alt text](images/arquitectura_ansible_gcp.png "Arquitectura de la solución que vamos a montar")
 
 
-
-
 ## 1. Creación Service Account y descargue las claves (.json)
 Es necesario crear una Service Account en GCP y darle permisos, para que posteriormente esta sea usada por Ansible para realizar los despliegues y configuraciones.
 Las Service Account se utilizan para la autenticación entre software - software (aplicación - aplicación). En nuestro caso (GCP — Ansible)
@@ -35,27 +33,27 @@ Create new key -> Download JSON file
 ```bash 
 # login with normal user
 gcloud init 
+# Se añade un metadato que indica que todas las máquinas del proyecto son accesibles por OS-LOGIN
+gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE 
 
-gcloud compute project-info add-metadata –metadata enable-oslogin=TRUE 
+# Ahora nos vamos a autenticar en nombre de la SA que hemos creado antes
+gcloud auth activate-service-account --key-file=<fichero .json descargado antes>
 
-# Login with service account user using the json file
-gcloud auth activate-service-account --key-file=<.json file downloaded earlier>
-
-# Generating SSH key for OS login to service account 
+# Generamos unas claves ssh específicas para esta SA, y se las vamos a asignar a la service account
 ssh-keygen -f ~/.ssh/ssh-key-ansible-sa
+# Poned el path absoluto de la ruta del fichero (no la relativa a la home)
+gcloud compute os-login ssh-keys add --key-file=ssh-key-ansible-sa.pub
 
-# Adding ssh-keys to service account (poner el path absoluto de la ruta del fichero)
-gcloud compute os-login ssh-keys add –key-file=ssh-key-ansible-sa.pub
-
-# Check if you are logged in with service account
+# Checkear que todo anda bien
 gcloud config list
 
-# Set the region and zone, if not set
-gcloud compute project-info add-metadata --metadata google-compute-default-region=europe-west1,google-compute-default-zone=europe-west1-b,enable-oslogin=TRUE
+# Setear la región y zona por defecto
+gcloud compute project-info add-metadata --metadata google-compute-default-region=europe-west1,google-compute-default-zone=europe-west1-b
 
-# Double confirm region and zone,
+# Confirmar que todo está correctamente configurado
 gcloud config get-value compute/region
 gcloud config get-value compute/zone
+gcloud config get-value enable-oslogin
 
 ```
 
@@ -210,9 +208,8 @@ Para el UID de la SA -> Consola de GCP -> IAM -> Service Accounts -> Haga clic e
 También se puede abrir el fichero de texto y vendrá ahí.
 
 
+## ENTREGA: subir a git la plantilla/s modificada. 
 ¿Por qué está fallando? ¿Qué cambios habría que hacer? Modifica la plantilla de Ansible para añadir los componentes que falta.
-1er Fallo: problema con ssh
-
 
 ## Resultado
 Al abrir la IP pública de la VM desde la consola de GCP, vemos que nuestro sitio web está implementado en la VM.
