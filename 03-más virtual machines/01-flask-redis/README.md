@@ -63,8 +63,12 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
   
   ```
   
-  Antes de subir la imagen al registry de Google, vamos a probar que nuestra imagen corra correctamente. ¿Qué error da? ¿Por qué puede ser este error? ¿Cómo habría que corregirlo?
-  <img src="images/environ.png" style="zoom:50%;" />
+  Antes de subir la imagen al registry de Google, vamos a probar que nuestra imagen corra correctamente con docker.
+  ```
+  docker run $app_image_uri
+  
+  ¿Qué error da? ¿Por qué puede ser este error? ¿Cómo habría que corregirlo?
+  <img src="images/error_environ.png" style="zoom:50%;" />
   
   
   
