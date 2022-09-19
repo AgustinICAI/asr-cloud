@@ -12,8 +12,7 @@ así como declarar todas las dependencias en un manifiesto, en nuestro caso ser�
 
 ### La aplicación
 
-El ejemplo que vamos a trabajar en este módulo trabaja precisamente con un ejemplo
-que ya hemos visto anteriormente en clase. Se trata de una aplicación sencilla escrita
+Se trata de una aplicación sencilla escrita
 en `python` (con `Flask`) la cual actúa como interfaz de comunicación con una 
 base de datos `Redis`, ambos dos servicios desplegados en GCP. La idea es que la
 aplicación `Flask` exponga:
