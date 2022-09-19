@@ -1,8 +1,5 @@
 FROM python:3.7.0-alpine
 
-ARG REDIS_IP
-ENV REDIS_IP_GCP=${REDIS_IP}
-
 ENV APP_PATH=/usr/src/app
 WORKDIR ${APP_PATH}
 

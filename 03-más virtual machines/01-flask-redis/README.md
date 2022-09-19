@@ -37,43 +37,46 @@ El código de la App está compuesto por los ficheros:
 
 Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
 
-1. Reservar una IP estática para la base de datos:
-   
-   ```shell
-   gcloud compute addresses create ${redis_ip} --quiet && \
-   REDIS_VM_IP=$(gcloud compute addresses list | awk '$1=="redis-ip" {print $2}')
-   ```
-   
-   Aquí no solo reservamos la IP, sino que la guardamos al vuelo en una variable de entorno
-   para su posterior uso (`$REDIS_VM_IP`)
-
-2. Desplegar una VM en GCP con la imagen de Redis, la cual estará sirviendo a través del puerto
+1. Desplegar una VM en GCP con la imagen de Redis, la cual estará sirviendo a través del puerto
   (TCP) `6379`:
    
    ```shell
    gcloud compute instances create-with-container $redis_server \
       --machine-type="$machine_type" \
       --container-image="$redis_image" \
-      --address="$REDIS_VM_IP" \
       --tags=http-server,https-server \
       --quiet
    ```
    Las opciones de configuración de la máquina y de la imagen vienen dadas en el fichero
    [config.txt](config.ini)
+
+
+2. Definir una variable de entorno adicional `app_image_uri` se define como `app_image_uri="eu.gcr.io/$PROJECT/$app_img"`, siendo
+  `$PROJECT` el UUID de nuestro proyecto, y `$app_img` el nombre de la imagen de nuestra
+  aplicación, que viene explicitado en el archivo de configuración de despliegue [config.txt](config.ini)
+
    
 3. Contenerizar la aplicación (haciendo `docker build`), pasándole como argumento de construcción
   la IP reservada para Redis, de manera que la App pueda establecer la conexión con ésta:
   ```shell
-  docker build --tag $app_image_uri --build-arg REDIS_IP=$REDIS_VM_IP .
+  docker build --tag $app_image_uri . 
+  
   ```
-
+  
+  Antes de subir la imagen al registry de Google, vamos a probar que nuestra imagen corra correctamente. ¿Qué error da? ¿Por qué puede ser este error? ¿Cómo habría que corregirlo?
+  <img src="images/environ.png" style="zoom:50%;" />
+  
+  
+  
 4. Publicar la imagen de la aplicación en nuestro `Container Registry` asociado al proyecto GCP:
   ```shell
   docker push "$app_image_uri"
   ```
-  donde `app_image_uri` se define como `app_image_uri="gcr.io/$PROJECT/$app_img"`, siendo
-  `$PROJECT` el UUID de nuestro proyecto, y `$app_img` el nombre de la imagen de nuestra
-  aplicación, que viene explicitado en el archivo de configuración de despliegue [config.txt](config.ini)
+  
+  Si falla este paso, probablemente haya que lanzar el siguiente comando para conectar nuestra instalación docker con el registry de Google
+  ```shell
+  gcloud auth configure-docker
+  ```
 
 5. Desplegar una VM en GCP con la imagen de la aplicación:
    ```shell
@@ -81,21 +84,12 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
     --machine-type=$machine_type \
     --container-image=$app_image_uri \
     --tags=http-server,https-server \
-    --container-env=REDIS_IP_GCP=$REDIS_VM_IP \
-    --quiet
+    --container-env=REDIS_IP_GCP=$REDIS_VM_IP
    ```
 
-6. Crear dos reglas de `firewall` para permitir tráfico de entrada en los puerto `5000` (app.py)
+6. Crear regla de `firewall` para permitir tráfico de entrada en los puerto `5000` que es la que sirve el trafico (app.py)
   y `6379` (redis):
    ```shell
-    gcloud compute firewall-rules create "default-allow-external-$redis_port" \
-    --direction=INGRESS \
-    --priority=1000 \
-    --network=default \
-    --action=ALLOW \
-    --rules=tcp:"$redis_port" \
-    --source-ranges=0.0.0.0/0
-
     gcloud compute firewall-rules create "default-allow-external-$app_port" \
     --direction=INGRESS \
     --priority=1000 \
