@@ -44,7 +44,6 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
    gcloud compute instances create-with-container $redis_server \
       --machine-type="$machine_type" \
       --container-image="$redis_image" \
-      --tags=http-server,https-server \
       --quiet
    ```
    Las opciones de configuración de la máquina y de la imagen vienen dadas en el fichero
@@ -88,7 +87,7 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
     gcloud compute instances create-with-container $app_name \
     --machine-type=$machine_type \
     --container-image=$app_image_uri \
-    --tags=http-server,https-server \
+    --tags=app-server \
     --container-env=REDIS_IP_GCP=$REDIS_VM_IP
    ```
 
@@ -101,7 +100,8 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
     --network=default \
     --action=ALLOW \
     --rules=tcp:"$app_port" \
-    --source-ranges=0.0.0.0/0
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=app-server
    ```
   
 Todo ello se podría haber ejecutado de forma automatica agregando todos los pasos en el siguiente script:
