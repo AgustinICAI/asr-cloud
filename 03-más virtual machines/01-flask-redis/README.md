@@ -68,6 +68,7 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
   docker run $app_image_uri
   ```
   ![alt text](images/error_environ.png)
+  
   ¿Qué error da? ¿Por qué puede ser este error? ¿Cómo habría que corregirlo?
 
   
