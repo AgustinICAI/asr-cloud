@@ -104,10 +104,11 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
     --source-ranges=0.0.0.0/0
    ```
   
-Todo ello se puede ejecutar automáticamente simplemente con el siguiente comando:
+Todo ello se podría haber ejecutado de forma automatica agregando todos los pasos en el siguiente script:
 ```shell
 chmod a+x deployment.sh && ./deployment.sh
 ```
+Esta podría ser nuestra primera infraestructura como código, pero veremos métodos más avanzados de hacer esto.
 
 ### Liberación de los recursos 
 Para evitar incurrir en gastos innecesarios que acabarían con nuestros créditos
