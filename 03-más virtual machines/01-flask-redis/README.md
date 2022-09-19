@@ -64,11 +64,12 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
   ```
   
   Antes de subir la imagen al registry de Google, vamos a probar que nuestra imagen corra correctamente con docker.
-  ```
+  ```shell
   docker run $app_image_uri
-  
+  ```
+  ![alt text](images/error_environ.png)
   ¿Qué error da? ¿Por qué puede ser este error? ¿Cómo habría que corregirlo?
-  [alt text](images/error_environ.png)
+
   
   
 4. Publicar la imagen de la aplicación en nuestro `Container Registry` asociado al proyecto GCP:
