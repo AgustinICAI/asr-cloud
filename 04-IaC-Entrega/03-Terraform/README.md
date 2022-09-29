@@ -376,6 +376,8 @@ donde también instalabamos el servidor web, pero si deberíamos con la plantill
 dejar la instancia lo más preparada posible, para poder instalar sobre la máquina el servidor web (este paso
 manual no hace falta realizarlo).
 
+Entregar en una carpeta "terraform" el/los ficheros ".tf" que hacen falta para llegar a la solución.
+
 
 #### Liberación de los recursos
 
