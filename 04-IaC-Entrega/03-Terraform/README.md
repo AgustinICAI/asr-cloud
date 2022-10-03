@@ -376,6 +376,10 @@ donde también instalabamos el servidor web, pero si deberíamos con la plantill
 dejar la instancia lo más preparada posible, para poder instalar sobre la máquina el servidor web (este paso
 manual no hace falta realizarlo).
 
+Entregar en una carpeta "terraform" el/los ficheros ".tf" que hacen falta para llegar a la solución.
+
+Si habéis entregado la parte de Ansible y Terraform partiréis de un 9 (y para abajo). Si deseais llegar al diez, es necesario investigar el uso de los vars en Terraform, y como se podría invocar el mismo terraform con distintas variables de entorno (como son el nombre del proyecto). La variable GOOGLE_APPLICATION_CREDENTIALS que usa para setear la service account se da por hecho que tiene que ser seteable ;-).
+
 
 #### Liberación de los recursos
 

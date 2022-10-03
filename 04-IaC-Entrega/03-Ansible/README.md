@@ -210,7 +210,12 @@ También se puede abrir el fichero de texto y vendrá ahí.
 
 ## ENTREGA: subir a git la plantilla/s modificada. 
 ¿Por qué está fallando? ¿Qué cambios habría que hacer? Modifica la plantilla de Ansible para añadir los componentes que falta.
-
+Las preguntas son retóricas, vuestro profesor para corregir esta plantilla se va a descargar vuestra entrega que hagáis en moodle. En ella tendrá que existir la estructura de carpetas que habéis preparado metido todo en una carpeta "ansible". Para la validación lanzará algo de este estilo sobre un proyecto ya creado donde se habrá activado el os-login y se habrá creado una serviceaccount.
+```shell
+#El argumento -e sustituye las variables que hayais definido en la plantilla
+ansible-playbook main.yml -u sa_XXXX13412394812\
+-e "gcp_project=proyecto-correccion-123 gcp_cred_file=/home/agus/ICAI/sa-correccion.json"
+```
 ## Resultado
 Al abrir la IP pública de la VM desde la consola de GCP, vemos que nuestro sitio web está implementado en la VM.
 Sitio web en ejecución de instancias de VM de GCP, implementado con Ansible
