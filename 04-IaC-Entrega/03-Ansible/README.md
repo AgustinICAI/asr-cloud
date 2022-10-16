@@ -212,9 +212,26 @@ También se puede abrir el fichero de texto y vendrá ahí.
 ¿Por qué está fallando? ¿Qué cambios habría que hacer? Modifica la plantilla de Ansible para añadir los componentes que falta.
 Las preguntas son retóricas, vuestro profesor para corregir esta plantilla se va a descargar vuestra entrega que hagáis en moodle. En ella tendrá que existir la estructura de carpetas que habéis preparado metido todo en una carpeta "ansible". Para la validación lanzará algo de este estilo sobre un proyecto ya creado donde se habrá activado el os-login y se habrá creado una serviceaccount.
 ```shell
-#El argumento -e sustituye las variables que hayais definido en la plantilla
-ansible-playbook main.yml -u sa_XXXX13412394812\
--e "gcp_project=proyecto-correccion-123 gcp_cred_file=/home/agus/ICAI/sa-correccion.json"
+#!/bin/bash
+gcp_project=proyectoXXXXXXX
+gcloud config set project $gcp_project
+gcloud config set account a****a@g****.com
+##BORRANDO CUALQUIER MÁQUINA O REGLA DE FIREWALL PREVIA (PARA NO PISAR LO DE OTRO ALUMNO ANTERIOR)
+gcloud compute instances list | grep RUNNING | awk '{printf "gcloud compute instances delete %s --zone %s --quiet\n", $1, $2}' | bash
+gcloud compute firewall-rules list | grep -v "NAME" | awk '{printf "gcloud compute firewall-rules delete %s --quiet\n",$1}' | bash
+
+##Configuración para confiar siempre de los nuevos hosts añadidos
+echo "[defaults]
+host_key_checking = False" > ansible.cfg
+
+###LANZANDO EL ANSIBLE PLAYBOOK
+ansible-playbook main.yml -e "gcp_project=$gcp_project gcp_cred_file='/full/path/sa.json' zone='europe-west1-d'" -u "sa_$(jq -r .client_id /full/path/sa.json)" --key-file /full/path/.ssh/ssh-key-ansible-sa"
+
+
+curl $(gcloud compute instances describe maquina-prueba \
+  --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+
+
 ```
 ## Resultado
 Al abrir la IP pública de la VM desde la consola de GCP, vemos que nuestro sitio web está implementado en la VM.
