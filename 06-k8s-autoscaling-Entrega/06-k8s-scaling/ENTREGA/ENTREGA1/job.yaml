@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: mycronjob
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      parallelism: 5
+      template:
+        spec:
+          containers:
+          - name: artillery
+            image: artilleryio/artillery:latest
+            command: ["run","test.yaml"]
+          restartPolicy: Never
+      backoffLimit: 2
+  
+  concurrencyPolicy: Allow    

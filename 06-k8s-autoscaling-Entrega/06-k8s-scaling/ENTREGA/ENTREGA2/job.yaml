@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: mycronjob
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      parallelism: 5
+      template:
+        spec:
+          containers:
+          - name: ab
+            image: gcr.io/myproyecto/ab:v.0.0.1
+            command: ["ab","-n","10000","-c","10","http://php-apache"]
+          restartPolicy: Never
+      backoffLimit: 2
+  
+  concurrencyPolicy: Allow 

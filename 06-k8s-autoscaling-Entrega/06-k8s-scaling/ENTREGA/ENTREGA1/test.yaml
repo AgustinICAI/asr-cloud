@@ -1,0 +1,11 @@
+config:
+  target: "http://php-apache"
+  phases:
+    - duration: 300
+      arrivalRate: 200
+      
+scenarios:
+  - flow:
+      - get:
+          url: "/"
+
